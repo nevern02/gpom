@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"os/exec"
 	"time"
 )
 
@@ -18,6 +19,13 @@ var timer Timer
 func main() {
 	var command string
 
+	flag.Usage = func() {
+		fmt.Println("Usage: gpom COMMAND\n")
+		fmt.Println("A Pomodoro timer.\n")
+		fmt.Println("Author: \n\tBrandon Rice <brandon@blrice.net>\n")
+		fmt.Println("Commands:\n\tstart\tStart the timer")
+	}
+
 	flag.Parse()
 
 	if len(flag.Args()) > 0 {
@@ -28,20 +36,19 @@ func main() {
 	case "start":
 		Start()
 	default:
-		fmt.Println("Invalid command.")
+		flag.Usage()
 	}
 }
 
 func Start() {
 	timer = Timer{Duration, time.NewTicker(time.Second)}
-	channel := timer.Ticker.C
 
 	fmt.Println("Starting timer...")
 
 	go func() {
 		for {
 			select {
-			case <-channel:
+			case <-timer.Ticker.C:
 				timer.Remaining -= 1 * time.Second
 				fmt.Printf("   %s remaining...     \r", timer.Remaining)
 			}
@@ -51,7 +58,8 @@ func Start() {
 	select {
 	case <-time.After(timer.Remaining):
 		timer.Ticker.Stop()
-		fmt.Println("\nTime's up!")
-		break
+		fmt.Println("\nTime's up!\a")
+		command := exec.Command("notify-send", "Pomodoro", "Take a break!")
+		command.Run()
 	}
 }
