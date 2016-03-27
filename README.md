@@ -2,6 +2,9 @@
 gpom is a command-line [Pomodoro](http://pomodorotechnique.com/) timer written in Go. 
 
 ## Installation
+Download the latest `gpom` binary from [https://github.com/nevern02/gpom/releases](https://github.com/nevern02/gpom/releases).
+
+## From Source
 First, install [Go](https://golang.org/doc/install).
 
 Then, install the package from this repo:
