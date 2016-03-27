@@ -14,7 +14,7 @@ go get github.com/nevern02/gpom
 
 Finally, make sure your `PATH` includes `$GOPATH/bin`:
 ```
-export PATH=$PATH:/$GOPATH/bin
+export PATH=$PATH:$GOPATH/bin
 ```
 
 ## Usage
